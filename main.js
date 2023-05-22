@@ -9,15 +9,17 @@ let ctx;
 canvas = document.createElement("canvas")
 ctx = canvas.getContext("2d")
 
+const mainElement = document.getElementById('main');
+
+
 canvas.width = 400;
 canvas.height = 700;
-document.body.appendChild(canvas);
+mainElement.appendChild(canvas);
 
-////////////////////////////
+//스크롤링
 let bgY1 = 0;
 let bgY2 = -canvas.height;
 let bgSpeed = 1;
-/////////////////////////////
 
 let backgroundImage, spaceshipImage, bulletImage, enemyImage, gameOverImage;
 
@@ -127,7 +129,6 @@ function Enemy() {
 
         if (this.y >= canvas.height - 32) {
             gameOn = false;
-            console.log("오버")
         }
     }
 }
@@ -139,28 +140,21 @@ function createEnemy() {
 
 
 
-/////
 let timeoutId;
 
 function createEnemyWrapper() {
     createEnemy();
 
-    // If the game is still on, set up the next call.
     if (gameOn) {
         timeoutId = setTimeout(createEnemyWrapper, (Math.random() + 0.1) * 800);
     }
 }
 
 
-///////
-
 
 function createBullet() {
-    let b = new Bullet;    //여기서 궁금한점: 여러개를 만들면 b가 중복되는거 아님?
+    let b = new Bullet;    
     b.init();
-
-    console.log("새로운총알리스트", bulletList);
-
 }
 
 function setupKeyboardListener() {
