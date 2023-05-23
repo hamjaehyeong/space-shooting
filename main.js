@@ -1,6 +1,6 @@
 let gameOverSound = document.getElementById('gameOverSound');
 //canvas setting
-let gameOn = true;
+let gameOn = false;
 
 let score = 0;
 
@@ -47,7 +47,7 @@ function loadImage() {
 
 
 function playGameOverSound() {
-    gameOverSound.play();
+   // gameOverSound.play();
 }
 function playBulletSound() {
     let createBulletSound = document.createElement('audio')
@@ -148,6 +148,7 @@ function createEnemyWrapper() {
     if (gameOn) {
         timeoutId = setTimeout(createEnemyWrapper, (Math.random() + 0.1) * 800);
     }
+    console.log(enemyList)
 }
 
 
@@ -241,6 +242,17 @@ function render() {
 
 }
 
+
+let bodyElement = document.body
+let startButtonElement = document.querySelector('.startButton');
+
+function clearEnemyList() {
+    while (enemyList.length > 0) {
+        enemyList.pop();
+    }
+}
+
+//메인
 function main() {
     if (gameOn) {
         update();
@@ -251,10 +263,40 @@ function main() {
         ctx.drawImage(gameOverImage, 50, 150, 300, 300);
         clearTimeout(timeoutId);
         playGameOverSound();
+        clearEnemyList();
+        restart();
     }
 }
 
-loadImage();
-createEnemyWrapper();
-setupKeyboardListener()
-main();
+
+startButtonElement.addEventListener('click', function () {
+
+    bodyElement.classList.remove('overlay');
+
+
+    gameOn=true;
+
+    loadImage();
+    setupKeyboardListener();
+
+    createEnemyWrapper();
+    main();
+
+    startButtonElement.remove();
+});
+
+function restart() {
+    let restartButtonElement = document.createElement('button');
+    restartButtonElement.className = 'startButton';
+    restartButtonElement.textContent = '재시작';
+    document.body.append(restartButtonElement);
+    bodyElement.classList.add('overlay')
+    restartButtonElement.addEventListener('click', function () {
+        gameOn = true;
+        bodyElement.classList.remove('overlay')
+        restartButtonElement.remove();
+        score=0;
+        main();
+        createEnemyWrapper();
+    })
+}
