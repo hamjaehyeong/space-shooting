@@ -47,7 +47,7 @@ function loadImage() {
 
 
 function playGameOverSound() {
-   // gameOverSound.play();
+   gameOverSound.play();
 }
 function playBulletSound() {
     let createBulletSound = document.createElement('audio')
